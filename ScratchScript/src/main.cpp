@@ -151,8 +151,8 @@ ImTextureID draw_viewport(int width, int height, bool cleanup)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        auto w2 = width * 0.5f;
-        auto h2 = height * 0.5f;
+        auto w2 = (float) width * 0.5f;
+        auto h2 = (float) height * 0.5f;
         glm::mat4 proj = glm::ortho(-w2, w2, -h2, h2);
 
         vao->Bind();
