@@ -2,7 +2,7 @@
 #include <scr/Project.hpp>
 #include <scr/Sprite.hpp>
 
-#include <imgui/imgui.h>
+#include <imgui.h>
 
 const float ICON_SIZE = 80.0f;
 const float COLUMN_WIDTH = ICON_SIZE + 80.0f;

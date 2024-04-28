@@ -12,3 +12,6 @@
 	path = ImGUI/imgui
 	url = https://github.com/ocornut/imgui.git
 	branch = docking
+[submodule "GLM"]
+	path = GLM
+	url = https://github.com/icaven/glm.git

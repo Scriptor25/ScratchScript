@@ -1,6 +1,6 @@
 #include <scr/Gui.hpp>
 
-#include <imgui/imgui.h>
+#include <imgui.h>
 
 void scr::ShowViewport(ViewportCallback callback)
 {

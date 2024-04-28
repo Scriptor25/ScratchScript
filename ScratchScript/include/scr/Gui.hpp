@@ -1,9 +1,9 @@
 #pragma once
 
 #include <scr/ScratchScript.hpp>
+#include <scr/TextEditor.h>
 
-#include <imgui/imgui.h>
-#include <imgui/TextEditor.h>
+#include <imgui.h>
 
 #include <vector>
 

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/GLEW" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/GLFW" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/ImGUI/imgui" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/JSON" vcs="Git" />
+  </component>
+</project>
