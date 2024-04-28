@@ -1,0 +1,47 @@
+{
+  "name": "Test",
+  "version": 1,
+  "sprites": [
+    {
+      "name": "Stage",
+      "isstage": true,
+      "script": "script1.txt"
+    },
+    {
+      "name": "Sprite1",
+      "isstage": false,
+      "show": true,
+      "position": [ 0.0, 0.0 ],
+      "size": 100.0,
+      "direction": 90.0,
+      "script": "script2.txt",
+      "currentcostume": 0,
+      "costumes": [
+        {
+          "name": "costume1",
+          "source": "costume1.png"
+        }
+      ]
+    },
+    {
+      "name": "Cat",
+      "isstage": false,
+      "show": true,
+      "position": [ 100.0, 20.0 ],
+      "size": 100.0,
+      "direction": 90.0,
+      "script": "script3.txt",
+      "currentcostume": 0,
+      "costumes": [
+        {
+          "name": "Scratch",
+          "source": "Scratch.png"
+        },
+        {
+          "name": "costume1",
+          "source": "costume1.png"
+        }
+      ]
+    }
+  ]
+}

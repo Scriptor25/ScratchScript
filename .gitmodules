@@ -1,0 +1,14 @@
+[submodule "GLEW"]
+	path = GLEW
+	url = https://github.com/Perlmint/glew-cmake.git
+[submodule "ImGUI"]
+	path = ImGUI/imgui
+	url = https://github.com/ocornut/imgui.git
+	branch = docking
+[submodule "JSON"]
+	path = JSON
+	url = https://github.com/nlohmann/json.git
+[submodule "GLFW"]
+	path = GLFW
+	url = https://github.com/glfw/glfw.git
+	branch = latest
