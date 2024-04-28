@@ -29,7 +29,7 @@ void scr::ShowResources(Sprite &sprite, TextEditor &editor)
                 const auto column_height = ICON_SIZE + ImGui::CalcTextSize("Costume").y * 2;
                 const auto column_width = COLUMN_WIDTH + ImGui::GetStyle().ItemSpacing.x;
 
-                if (ImGui::BeginChild("##selectcostume", {column_width, 0}));
+                if (ImGui::BeginChild("##selectcostume", {column_width, 0}))
                 {
                     size_t moveSrc = 0;
                     size_t moveDst = 0;
@@ -38,7 +38,7 @@ void scr::ShowResources(Sprite &sprite, TextEditor &editor)
                     size_t i = 0;
                     for (auto &costume: sprite.Costumes)
                     {
-                        ImGui::PushID(i);
+                        ImGui::PushID(static_cast<int>(i));
 
                         bool sel = sprite.CurrentCostume == i;
 
@@ -69,9 +69,10 @@ void scr::ShowResources(Sprite &sprite, TextEditor &editor)
                             ImGui::EndDragDropTarget();
                         }
 
-                        auto scale = std::min(ICON_SIZE / costume.Width(), ICON_SIZE / costume.Height());
-                        auto w = scale * costume.Width();
-                        auto h = scale * costume.Height();
+                        auto scale = std::min(ICON_SIZE / (float) costume.Width(),
+                                              ICON_SIZE / (float) costume.Height());
+                        auto w = scale * (float) costume.Width();
+                        auto h = scale * (float) costume.Height();
                         ImGui::SetCursorPosX(pos.x + (COLUMN_WIDTH - w) * 0.5f);
                         ImGui::SetCursorPosY(pos.y);
                         ImGui::Image((void *) (intptr_t) costume.TexID(), {w, h}, {0, 1}, {1, 0});
@@ -99,15 +100,15 @@ void scr::ShowResources(Sprite &sprite, TextEditor &editor)
                         if (moveDst > moveSrc)
                         {
                             auto costume = sprite.Costumes[moveSrc];
-                            for (size_t i = moveSrc; i < moveDst; i++)
-                                sprite.Costumes[i] = sprite.Costumes[i + 1];
+                            for (size_t j = moveSrc; j < moveDst; j++)
+                                sprite.Costumes[j] = sprite.Costumes[j + 1];
                             sprite.Costumes[moveDst] = costume;
                         }
                         else
                         {
                             auto costume = sprite.Costumes[moveSrc];
-                            for (size_t i = moveSrc; i > moveDst; i--)
-                                sprite.Costumes[i] = sprite.Costumes[i - 1];
+                            for (size_t j = moveSrc; j > moveDst; j--)
+                                sprite.Costumes[j] = sprite.Costumes[j - 1];
                             sprite.Costumes[moveDst] = costume;
                         }
                         sprite.CurrentCostume = moveDst;

@@ -7,11 +7,11 @@
 
 namespace scr
 {
-	struct Script
-	{
-		std::string Source;
+    struct Script
+    {
+        std::string Source;
 
-		std::vector<std::string> Lines;
-		bool Changed = false;
-	};
+        std::vector<std::string> Lines;
+        bool Changed = false;
+    };
 }

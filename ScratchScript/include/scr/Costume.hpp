@@ -7,17 +7,19 @@
 
 namespace scr
 {
-	struct Costume
-	{
-		std::string Name;
-		std::string Source;
+    struct Costume
+    {
+        std::string Name;
+        std::string Source;
 
-		void Load();
-		
-		int Width();
-		int Height();
-		GLuint TexID();
+        void Load();
 
-		Texture* Tex = nullptr;
-	};
+        int Width() const;
+
+        int Height() const;
+
+        GLuint TexID() const;
+
+        Texture *Tex = nullptr;
+    };
 }

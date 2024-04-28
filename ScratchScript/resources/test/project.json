@@ -4,18 +4,21 @@
   "sprites": [
     {
       "name": "Stage",
-      "isstage": true,
+      "isStage": true,
       "script": "script1.txt"
     },
     {
       "name": "Sprite1",
-      "isstage": false,
+      "isStage": false,
       "show": true,
-      "position": [ 0.0, 0.0 ],
+      "position": [
+        0.0,
+        0.0
+      ],
       "size": 100.0,
       "direction": 90.0,
       "script": "script2.txt",
-      "currentcostume": 0,
+      "currentCostume": 0,
       "costumes": [
         {
           "name": "costume1",
@@ -25,13 +28,16 @@
     },
     {
       "name": "Cat",
-      "isstage": false,
+      "isStage": false,
       "show": true,
-      "position": [ 100.0, 20.0 ],
+      "position": [
+        100.0,
+        20.0
+      ],
       "size": 100.0,
       "direction": 90.0,
       "script": "script3.txt",
-      "currentcostume": 0,
+      "currentCostume": 0,
       "costumes": [
         {
           "name": "Scratch",

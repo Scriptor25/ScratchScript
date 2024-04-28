@@ -12,14 +12,14 @@
 
 namespace scr
 {
-	// Get the current version
-	uint32_t GetVersion();
+    // Get the current version
+    uint32_t GetVersion();
 
-	// Open a file stream to a resource file
-	std::fstream Open(const std::string& name, std::fstream::openmode mode);
+    // Open a file stream to a resource file
+    std::fstream Open(const std::string &name, std::fstream::openmode mode);
 
-	struct Project;
-	struct Sprite;
-	struct Costume;
-	struct Script;
+    struct Project;
+    struct Sprite;
+    struct Costume;
+    struct Script;
 }

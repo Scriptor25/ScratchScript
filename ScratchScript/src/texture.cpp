@@ -84,9 +84,9 @@ scr::Texture* scr::Texture::Bind()
 	return this;
 }
 
-scr::Texture* scr::Texture::Parameter(GLenum pname, GLint param)
+scr::Texture* scr::Texture::Parameter(GLenum name, GLint param)
 {
-	glTexParameteri(m_Target, pname, param);
+	glTexParameteri(m_Target, name, param);
 	return this;
 }
 

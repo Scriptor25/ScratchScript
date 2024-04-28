@@ -24,6 +24,11 @@ void
 gl_debug_message_callback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar *message,
                           const void *userParam)
 {
+    (void) source;
+    (void) severity;
+    (void) length;
+    (void) userParam;
+
     fprintf(stderr, "[OpenGL 0x%08X] %s\n", id, message);
     if (type == GL_DEBUG_TYPE_ERROR)
         throw;
@@ -62,7 +67,7 @@ ImTextureID draw_viewport(int width, int height, bool cleanup)
         delete ibo;
         delete program;
 
-        return 0;
+        return nullptr;
     }
 
     if (width > 0 && height > 0 && (prevWidth != width || prevHeight != height))
@@ -76,7 +81,7 @@ ImTextureID draw_viewport(int width, int height, bool cleanup)
 
             fbo->Bind();
 
-            color->Bind()->Image2D(0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0)->Unbind();
+            color->Bind()->Image2D(0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr)->Unbind();
 
             depth = new scr::Renderbuffer(GL_RENDERBUFFER);
             depth->Bind()->Storage(GL_DEPTH_COMPONENT, width, height)->Unbind();
@@ -100,7 +105,7 @@ ImTextureID draw_viewport(int width, int height, bool cleanup)
                 ->Parameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST)
                 ->Parameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
                 ->Parameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
-                ->Image2D(0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0)
+                ->Image2D(0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr)
                 ->Unbind();
         fbo->AddTexture2D(GL_COLOR_ATTACHMENT0, color, 0);
 
@@ -116,7 +121,7 @@ ImTextureID draw_viewport(int width, int height, bool cleanup)
         vbo = new scr::Buffer(GL_ARRAY_BUFFER, GL_STATIC_DRAW);
         vbo->Bind();
         glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), nullptr);
         glEnableVertexAttribArray(1);
         glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void *) (2 * sizeof(GLfloat)));
         vbo->Data(sizeof(vertices), vertices)->Unbind();
@@ -131,19 +136,6 @@ ImTextureID draw_viewport(int width, int height, bool cleanup)
 
     if (init)
     {
-        //
-        // TODO:
-        // construct model matrix for each sprite:
-        //   - scale to fit costume
-        //   - scale with size
-        //   - rotate with direction
-        //   - translate by position // DONE
-        // on frame draw each sprite:
-        //   - bind costume texture
-        //   - set uniform uTexture
-        //   - set uniform uM
-        //
-
         fbo->Bind();
         glViewport(0, 0, width, height);
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -175,7 +167,7 @@ ImTextureID draw_viewport(int width, int height, bool cleanup)
             tex->Bind();
 
             glUniformMatrix4fv(program->Uniform("uM"), 1, false, &sprite.Model[0][0]);
-            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
             tex->Unbind();
             glActiveTexture(GL_TEXTURE0);
@@ -190,7 +182,7 @@ ImTextureID draw_viewport(int width, int height, bool cleanup)
     }
     else
     {
-        return (void *) (intptr_t) 0;
+        return nullptr;
     }
 
     return (void *) (intptr_t) color->Handle();
@@ -198,6 +190,9 @@ ImTextureID draw_viewport(int width, int height, bool cleanup)
 
 int main(int argc, const char **argv)
 {
+    (void) argc;
+    (void) argv;
+
     if (!scr::Window::Init())
         return 1;
 
@@ -216,20 +211,19 @@ int main(int argc, const char **argv)
 
     glEnable(GL_DEBUG_OUTPUT);
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-    glDebugMessageCallback(gl_debug_message_callback, NULL);
+    glDebugMessageCallback(gl_debug_message_callback, nullptr);
 
     ImGui::CreateContext();
     auto &io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-    // io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad; // hangs and crashes
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
-    io.Fonts->AddFontFromFileTTF("resources/fonts/Gothic3.ttf", 24);
     io.FontDefault = io.Fonts->AddFontFromFileTTF("resources/fonts/SpaceMono-Regular.ttf", 24);
     io.Fonts->AddFontFromFileTTF("resources/fonts/SpaceMono-Bold.ttf", 24);
     io.Fonts->AddFontFromFileTTF("resources/fonts/SpaceMono-BoldItalic.ttf", 24);
     io.Fonts->AddFontFromFileTTF("resources/fonts/SpaceMono-Italic.ttf", 24);
+    io.Fonts->AddFontFromFileTTF("resources/fonts/Gothic3.ttf", 24);
     io.Fonts->Build();
 
     ImGui::StyleColorsDark();

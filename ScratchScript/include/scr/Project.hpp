@@ -7,10 +7,10 @@
 
 namespace scr
 {
-	struct Project
-	{
-		std::string Name;
-		uint32_t Version;
-		std::vector<Sprite> Sprites;
-	};
+    struct Project
+    {
+        std::string Name;
+        uint32_t Version;
+        std::vector<Sprite> Sprites;
+    };
 }

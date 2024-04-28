@@ -1,40 +1,40 @@
 #include <scr/GL.hpp>
 
 scr::Framebuffer::Framebuffer(GLenum target)
-	: m_Target(target)
+        : m_Target(target)
 {
-	glGenFramebuffers(1, &m_Handle);
+    glGenFramebuffers(1, &m_Handle);
 }
 
 scr::Framebuffer::~Framebuffer()
 {
-	glDeleteFramebuffers(1, &m_Handle);
+    glDeleteFramebuffers(1, &m_Handle);
 }
 
 scr::Framebuffer::operator bool() const
 {
-	return m_Handle != 0;
+    return m_Handle != 0;
 }
 
-scr::Framebuffer* scr::Framebuffer::Bind()
+scr::Framebuffer *scr::Framebuffer::Bind()
 {
-	glBindFramebuffer(m_Target, m_Handle);
-	return this;
+    glBindFramebuffer(m_Target, m_Handle);
+    return this;
 }
 
-scr::Framebuffer* scr::Framebuffer::AddTexture2D(GLenum attachment, const Texture* texture, GLint level)
+scr::Framebuffer *scr::Framebuffer::AddTexture2D(GLenum attachment, const Texture *texture, GLint level)
 {
-	glFramebufferTexture2D(m_Target, attachment, texture->Target(), texture->Handle(), level);
-	return this;
+    glFramebufferTexture2D(m_Target, attachment, texture->Target(), texture->Handle(), level);
+    return this;
 }
 
-scr::Framebuffer* scr::Framebuffer::AddRenderbuffer(GLenum attachment, const Renderbuffer* renderbuffer)
+scr::Framebuffer *scr::Framebuffer::AddRenderbuffer(GLenum attachment, const Renderbuffer *renderbuffer)
 {
-	glFramebufferRenderbuffer(m_Target, attachment, renderbuffer->Target(), renderbuffer->Handle());
-	return this;
+    glFramebufferRenderbuffer(m_Target, attachment, renderbuffer->Target(), renderbuffer->Handle());
+    return this;
 }
 
-void scr::Framebuffer::Unbind()
+void scr::Framebuffer::Unbind() const
 {
-	glBindFramebuffer(m_Target, 0);
+    glBindFramebuffer(m_Target, 0);
 }

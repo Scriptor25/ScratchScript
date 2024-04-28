@@ -1,34 +1,39 @@
 #pragma once
 
 #define GLFW_INCLUDE_NONE
+
 #include <GLFW/glfw3.h>
 
 #include <string>
 
 namespace scr
 {
-	class Window
-	{
-	public:
-		static bool Init();
-		static void Terminate();
+    class Window
+    {
+    public:
+        static bool Init();
 
-		Window(const std::string& title, int width, int height);
-		~Window();
+        static void Terminate();
 
-		operator bool() const;
-		GLFWwindow* operator*() const;
+        Window(const std::string &title, int width, int height);
 
-		void SetTitle(const std::string& title);
+        ~Window();
 
-		void GetFramebufferSize(int* width, int* height);
+        explicit operator bool() const;
 
-		bool Update();
-		void Destroy();
+        GLFWwindow *operator*() const;
 
-	private:
-		bool m_Destroyed = false;
+        void SetTitle(const std::string &title);
 
-		GLFWwindow* m_Handle;
-	};
+        void GetFramebufferSize(int *width, int *height);
+
+        bool Update();
+
+        void Destroy();
+
+    private:
+        bool m_Destroyed = false;
+
+        GLFWwindow *m_Handle;
+    };
 }

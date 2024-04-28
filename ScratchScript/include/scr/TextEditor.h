@@ -25,7 +25,7 @@ public:
         Preprocessor,
         Identifier,
         KnownIdentifier,
-        PreprocIdentifier,
+        PreProcIdentifier,
         Comment,
         MultiLineComment,
         Background,
@@ -58,9 +58,9 @@ public:
     };
 
     // Represents a character coordinate from the user's point of view,
-    // i. e. consider an uniform grid (assuming fixed-width font) on the
+    // i.e. consider a uniform grid (assuming fixed-width font) on the
     // screen as it is rendered, and each cell has its own coordinate, starting from 0.
-    // Tabs are counted as [1..mTabSize] count empty spaces, depending on
+    // Tabs are counted as [1...mTabSize] count empty spaces, depending on
     // how many space is necessary to reach the next tab stop.
     // For example, coordinate (1, 5) represents the character 'B' in a line "\tABC", when mTabSize = 4,
     // because it is rendered as "    ABC" on the screen.
@@ -165,9 +165,9 @@ public:
         std::string mName;
         Keywords mKeywords;
         Identifiers mIdentifiers;
-        Identifiers mPreprocIdentifiers;
+        Identifiers mPreProcIdentifiers;
         std::string mCommentStart, mCommentEnd, mSingleLineComment;
-        char mPreprocChar;
+        char mPreProcChar;
         bool mAutoIndentation;
 
         TokenizeCallback mTokenize;
@@ -177,7 +177,7 @@ public:
         bool mCaseSensitive;
 
         LanguageDefinition()
-                : mPreprocChar('#'), mAutoIndentation(true), mTokenize(nullptr), mCaseSensitive(true)
+                : mPreProcChar('#'), mAutoIndentation(true), mTokenize(nullptr), mCaseSensitive(true)
         {
         }
 
@@ -333,25 +333,25 @@ private:
     class UndoRecord
     {
     public:
-        UndoRecord() {}
+        UndoRecord() = default;
 
-        ~UndoRecord() {}
+        ~UndoRecord() = default;
 
         UndoRecord(
                 const std::string &aAdded,
-                const TextEditor::Coordinates aAddedStart,
-                const TextEditor::Coordinates aAddedEnd,
+                TextEditor::Coordinates aAddedStart,
+                TextEditor::Coordinates aAddedEnd,
 
                 const std::string &aRemoved,
-                const TextEditor::Coordinates aRemovedStart,
-                const TextEditor::Coordinates aRemovedEnd,
+                TextEditor::Coordinates aRemovedStart,
+                TextEditor::Coordinates aRemovedEnd,
 
                 TextEditor::EditorState &aBefore,
                 TextEditor::EditorState &aAfter);
 
-        void Undo(TextEditor *aEditor);
+        void Undo(TextEditor *aEditor) const;
 
-        void Redo(TextEditor *aEditor);
+        void Redo(TextEditor *aEditor) const;
 
         std::string mAdded;
         Coordinates mAddedStart;
@@ -461,8 +461,8 @@ private:
     bool mIgnoreImGuiChild;
     bool mShowWhitespaces;
 
-    Palette mPaletteBase;
-    Palette mPalette;
+    Palette mPaletteBase{};
+    Palette mPalette{};
     LanguageDefinition mLanguageDefinition;
     RegexList mRegexList;
 

@@ -11,25 +11,26 @@
 
 namespace scr
 {
-	struct Sprite
-	{
-		Costume GetCostume();
-		void ApplyModel();
+    struct Sprite
+    {
+        Costume GetCostume();
 
-		std::string Name;
+        void ApplyModel();
 
-		bool IsStage = false;
-		bool Show = true;
+        std::string Name;
 
-		float Position[2]{ 0.0f, 0.0f };
-		float Size = 100.0f;
-		float Direction = 90.0f;
+        bool IsStage = false;
+        bool Show = true;
 
-		Script Script;
+        float Position[2]{0.0f, 0.0f};
+        float Size = 100.0f;
+        float Direction = 90.0f;
 
-		size_t CurrentCostume = 0;
-		std::vector<Costume> Costumes;
+        Script Script;
 
-		glm::mat4 Model;
-	};
+        size_t CurrentCostume = 0;
+        std::vector<Costume> Costumes;
+
+        glm::mat4 Model;
+    };
 }

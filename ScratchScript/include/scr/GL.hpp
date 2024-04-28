@@ -6,126 +6,153 @@
 
 namespace scr
 {
-	class Buffer;
-	class VertexArray;
-	class Framebuffer;
-	class Renderbuffer;
-	class Texture;
-	class Program;
+    class Buffer;
 
-	class Buffer
-	{
-	public:
-		Buffer(GLenum target, GLenum usage);
-		~Buffer();
+    class VertexArray;
 
-		operator bool() const;
+    class Framebuffer;
 
-		Buffer* Bind();
-		Buffer* Data(GLsizeiptr size, const void* data);
-		void Unbind();
+    class Renderbuffer;
 
-	private:
-		GLuint m_Handle;
-		GLenum m_Target;
-		GLenum m_Usage;
-	};
+    class Texture;
 
-	class VertexArray
-	{
-	public:
-		VertexArray();
-		~VertexArray();
+    class Program;
 
-		operator bool() const;
+    class Buffer
+    {
+    public:
+        Buffer(GLenum target, GLenum usage);
 
-		VertexArray* Bind();
-		void Unbind();
+        ~Buffer();
 
-	private:
-		GLuint m_Handle;
-	};
+        explicit operator bool() const;
 
-	class Framebuffer
-	{
-	public:
-		Framebuffer(GLenum target);
-		~Framebuffer();
+        Buffer *Bind();
 
-		operator bool() const;
+        Buffer *Data(GLsizeiptr size, const void *data);
 
-		Framebuffer* Bind();
-		Framebuffer* AddTexture2D(GLenum attachment, const Texture* texture, GLint level);
-		Framebuffer* AddRenderbuffer(GLenum attachment, const Renderbuffer* renderbuffer);
-		void Unbind();
+        void Unbind() const;
 
-	private:
-		GLuint m_Handle;
-		GLenum m_Target;
-	};
+    private:
+        GLuint m_Handle = 0;
+        GLenum m_Target;
+        GLenum m_Usage;
+    };
 
-	class Renderbuffer
-	{
-	public:
-		Renderbuffer(GLenum target);
-		~Renderbuffer();
+    class VertexArray
+    {
+    public:
+        VertexArray();
 
-		GLuint Handle() const;
-		GLenum Target() const;
+        ~VertexArray();
 
-		operator bool() const;
+        explicit operator bool() const;
 
-		Renderbuffer* Bind();
-		Renderbuffer* Storage(GLenum internalformat, GLsizei width, GLsizei height);
-		void Unbind();
+        VertexArray *Bind();
 
-	private:
-		GLuint m_Handle;
-		GLenum m_Target;
-	};
+        void Unbind();
 
-	class Texture
-	{
-	public:
-		static Texture* Load(const std::string& filename);
+    private:
+        GLuint m_Handle;
+    };
 
-		Texture(GLenum target);
-		~Texture();
+    class Framebuffer
+    {
+    public:
+        explicit Framebuffer(GLenum target);
 
-		GLuint Handle() const;
-		GLenum Target() const;
+        ~Framebuffer();
 
-		int Width();
-		int Height();
+        explicit operator bool() const;
 
-		operator bool() const;
+        Framebuffer *Bind();
 
-		Texture* Bind();
-		Texture* Parameter(GLenum pname, GLint param);
-		Texture* Image2D(GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const void* pixels);
-		void Unbind();
+        Framebuffer *AddTexture2D(GLenum attachment, const Texture *texture, GLint level);
 
-	private:
-		GLuint m_Handle;
-		GLenum m_Target;
+        Framebuffer *AddRenderbuffer(GLenum attachment, const Renderbuffer *renderbuffer);
 
-		int m_Width = 0, m_Height = 0;
-	};
+        void Unbind() const;
 
-	class Program
-	{
-	public:
-		Program(const std::string& vertex, const std::string& fragment);
-		~Program();
+    private:
+        GLuint m_Handle = 0;
+        GLenum m_Target;
+    };
 
-		operator bool() const;
+    class Renderbuffer
+    {
+    public:
+        explicit Renderbuffer(GLenum target);
 
-		GLint Uniform(const char* name);
+        ~Renderbuffer();
 
-		Program* Bind();
-		void Unbind();
+        [[nodiscard]] GLuint Handle() const;
 
-	private:
-		GLuint m_Handle;
-	};
+        [[nodiscard]] GLenum Target() const;
+
+        explicit operator bool() const;
+
+        Renderbuffer *Bind();
+
+        Renderbuffer *Storage(GLenum internalformat, GLsizei width, GLsizei height);
+
+        void Unbind() const;
+
+    private:
+        GLuint m_Handle = 0;
+        GLenum m_Target;
+    };
+
+    class Texture
+    {
+    public:
+        static Texture *Load(const std::string &filename);
+
+        explicit Texture(GLenum target);
+
+        ~Texture();
+
+        [[nodiscard]] GLuint Handle() const;
+
+        [[nodiscard]] GLenum Target() const;
+
+        int Width();
+
+        int Height();
+
+        explicit operator bool() const;
+
+        Texture *Bind();
+
+        Texture *Parameter(GLenum name, GLint param);
+
+        Texture *Image2D(GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format,
+                         GLenum type, const void *pixels);
+
+        void Unbind();
+
+    private:
+        GLuint m_Handle;
+        GLenum m_Target;
+
+        int m_Width = 0, m_Height = 0;
+    };
+
+    class Program
+    {
+    public:
+        Program(const std::string &vertex, const std::string &fragment);
+
+        ~Program();
+
+        explicit operator bool() const;
+
+        GLint Uniform(const char *name) const;
+
+        Program *Bind();
+
+        void Unbind();
+
+    private:
+        GLuint m_Handle;
+    };
 }
