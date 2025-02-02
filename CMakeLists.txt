@@ -2,43 +2,50 @@
 
 project(ScratchScript)
 
-set_property(GLOBAL PROPERTY CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(GLFW_BUILD_DOCS OFF)
-set(GLFW_INSTALL OFF)
-set(GLFW_LIBRARY_TYPE STATIC)
-add_subdirectory(GLFW)
+# GLFW #
+option(BUILD_SHARED_LIBS "" OFF)
+option(GLFW_BUILD_EXAMPLES "" OFF)
+option(GLFW_BUILD_TESTS "" OFF)
+option(GLFW_BUILD_DOCS "" OFF)
+option(GLFW_INSTALL "" OFF)
+add_subdirectory(deps/glfw)
 
-set(glew-cmake_BUILD_SHARED OFF)
-set(glew-cmake_BUILD_STATIC ON)
-set(ONLY_LIBS ON)
-add_subdirectory(GLEW)
+# GLEW #
+option(glew-cmake_BUILD_SHARED "" OFF)
+option(glew-cmake_BUILD_STATIC "" ON)
+option(ONLY_LIBS "" ON)
+add_subdirectory(deps/glew)
 
-set(IMGUI_EXAMPLES OFF)
-set(IMGUI_DEMO OFF)
-set(IMGUI_DISABLE_OBSOLETE_FUNCTIONS OFF)
-set(IMGUI_DISABLE_OBSOLETE_KEYIO OFF)
-set(IMGUI_ENABLE_STDLIB_SUPPORT ON)
-set(IMGUI_ENABLE_FREETYPE OFF)
-set(IMGUI_IMPL_SDL OFF)
-set(IMGUI_IMPL_METAL ${APPLE})
-set(IMGUI_IMPL_OSX ${APPLE})
-set(IMGUI_IMPL_WIN32 ${WIN32})
-set(IMGUI_IMPL_GLFW ON)
-set(IMGUI_IMPL_GLUT ON)
-set(IMGUI_IMPL_OPENGL3 ON)
-set(IMGUI_IMPL_OPENGL2 ${IMGUI_IMPL_OPENGL3})
-set(IMGUI_IMPL_DX9 ${WIN32})
-set(IMGUI_IMPL_DX10 ${WIN32})
-set(IMGUI_IMPL_DX11 ${WIN32})
-set(IMGUI_IMPL_DX12 ${WIN32})
-set(IMGUI_IMPL_VULKAN ON)
-add_subdirectory(ImGUI)
+# GLM #
+add_subdirectory(deps/glm)
 
-set(JSON_BuildTests OFF CACHE INTERNAL "")
-add_subdirectory(JSON)
+# JSON #
+option(JSON_BuildTests "" OFF)
+add_subdirectory(deps/json)
 
-set(GLM_ENABLE_CXX_20 ON)
-add_subdirectory(GLM)
+# IMGUI #
+add_library(imgui STATIC
+        deps/imgui/imgui.cpp
+        deps/imgui/imgui_demo.cpp
+        deps/imgui/imgui_draw.cpp
+        deps/imgui/imgui_tables.cpp
+        deps/imgui/imgui_widgets.cpp
+        deps/imgui/misc/cpp/imgui_stdlib.cpp
+        deps/imgui/backends/imgui_impl_glfw.cpp
+        deps/imgui/backends/imgui_impl_opengl3.cpp
+)
+target_include_directories(imgui PUBLIC deps/imgui deps/imgui/misc/cpp)
+target_link_libraries(imgui PUBLIC glfw)
 
-add_subdirectory(ScratchScript)
+# SCRATCH #
+file(GLOB_RECURSE source src/**.cpp include/**.hpp)
+
+add_executable(scratch ${source})
+target_include_directories(scratch PRIVATE include)
+target_link_libraries(scratch PRIVATE glfw libglew_static glm::glm nlohmann_json::nlohmann_json imgui)
+
+install(TARGETS scratch)
+install(DIRECTORY resources DESTINATION bin)

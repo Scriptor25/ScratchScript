@@ -4,6 +4,7 @@
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/GLEW" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/GLFW" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/GLM" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/ImGUI/imgui" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/JSON" vcs="Git" />
   </component>
