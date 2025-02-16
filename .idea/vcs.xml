@@ -2,10 +2,10 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/GLEW" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/GLFW" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/GLM" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/ImGUI/imgui" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/JSON" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/deps/glew" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/deps/glfw" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/deps/glm" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/deps/imgui" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/deps/json" vcs="Git" />
   </component>
 </project>
