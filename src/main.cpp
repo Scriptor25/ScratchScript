@@ -215,7 +215,7 @@ int main()
     if (!window)
         return 2;
 
-    if (const auto error = glewInit(); error != GLEW_OK)
+    if (const auto error = glewInit(); error != GLEW_OK && error != GLEW_ERROR_NO_GLX_DISPLAY)
     {
         fprintf(stderr, "[ScratchScript] Failed to init GLEW\n");
         const auto description = reinterpret_cast<const char *>(glewGetErrorString(error));
@@ -238,7 +238,6 @@ int main()
     io.Fonts->AddFontFromFileTTF("resources/fonts/SpaceMono-BoldItalic.ttf", 24);
     io.Fonts->AddFontFromFileTTF("resources/fonts/SpaceMono-Italic.ttf", 24);
     io.Fonts->AddFontFromFileTTF("resources/fonts/Gothic3.ttf", 24);
-    io.Fonts->Build();
 
     ImGui::StyleColorsDark();
     auto &style = ImGui::GetStyle();

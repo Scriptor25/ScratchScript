@@ -1203,7 +1203,7 @@ void TextEditor::Render(const char *aTitle, const ImVec2 &aSize, const bool aBor
     if (mHandleKeyboardInputs)
     {
         HandleKeyboardInputs();
-        ImGui::Push(true);
+        ImGui::PushItemFlag(ImGuiItemFlags_NoTabStop, true);
     }
 
     if (mHandleMouseInputs)
@@ -1213,7 +1213,7 @@ void TextEditor::Render(const char *aTitle, const ImVec2 &aSize, const bool aBor
     Render();
 
     if (mHandleKeyboardInputs)
-        ImGui::PopAllowKeyboardFocus();
+        ImGui::PopItemFlag();
 
     if (!mIgnoreImGuiChild)
         ImGui::EndChild();
