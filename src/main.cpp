@@ -5,12 +5,12 @@
 #include <GL/glew.h>
 #include <glm/ext.hpp>
 #include <nlohmann/json.hpp>
-#include <scr/GL.hpp>
-#include <scr/Gui.hpp>
-#include <scr/Project.hpp>
-#include <scr/ScratchScript.hpp>
-#include <scr/Sprite.hpp>
-#include <scr/Window.hpp>
+#include <scr/gl.hpp>
+#include <scr/gui.hpp>
+#include <scr/project.hpp>
+#include <scr/scr.hpp>
+#include <scr/sprite.hpp>
+#include <scr/window.hpp>
 
 static void gl_debug_message_callback(
     const GLenum source,
@@ -67,7 +67,7 @@ ImTextureID draw_viewport(const int width, const int height, const bool cleanup)
         1.0f,
         0.0f
     };
-    static const GLuint indices[] = {0, 1, 2, 2, 3, 0};
+    static const GLuint indices[] = { 0, 1, 2, 2, 3, 0 };
 
     if (cleanup)
     {
@@ -113,13 +113,13 @@ ImTextureID draw_viewport(const int width, const int height, const bool cleanup)
 
         color = new scr::Texture(GL_TEXTURE_2D);
         color
-                ->Bind()
-                ->Parameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST)
-                ->Parameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-                ->Parameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
-                ->Parameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
-                ->Image2D(0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr)
-                ->Unbind();
+            ->Bind()
+            ->Parameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+            ->Parameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+            ->Parameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
+            ->Parameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
+            ->Image2D(0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr)
+            ->Unbind();
         fbo->AddTexture2D(GL_COLOR_ATTACHMENT0, color, 0);
 
         depth = new scr::RenderBuffer(GL_RENDERBUFFER);
@@ -174,7 +174,7 @@ ImTextureID draw_viewport(const int width, const int height, const bool cleanup)
     glUniform1i(program->Uniform("uTexture"), 1);
     glUniformMatrix4fv(program->Uniform("uP"), 1, false, &proj[0][0]);
 
-    for (auto &sprite: project.Sprites)
+    for (auto &sprite : project.Sprites)
     {
         if (!sprite.Show || sprite.IsStage)
             continue;
@@ -267,9 +267,9 @@ int main()
 
         window.SetTitle(project.Name);
 
-        for (auto &sprite: project.Sprites)
+        for (auto &sprite : project.Sprites)
         {
-            for (auto &costume: sprite.Costumes)
+            for (auto &costume : sprite.Costumes)
                 costume.Load();
             sprite.ApplyModel();
         }
@@ -277,7 +277,7 @@ int main()
         stream.close();
     }
 
-    editor.SetTextLines(project.Sprites[selected].Script.Lines);
+    editor.SetTextLines(project.Sprites[selected].Script_.Lines);
 
     while (window.Update())
     {
@@ -296,8 +296,8 @@ int main()
 
         if (selected != prevSelected)
         {
-            project.Sprites[prevSelected].Script.Lines = editor.GetTextLines();
-            editor.SetTextLines(project.Sprites[selected].Script.Lines);
+            project.Sprites[prevSelected].Script_.Lines = editor.GetTextLines();
+            editor.SetTextLines(project.Sprites[selected].Script_.Lines);
         }
 
         ImGui::Render();

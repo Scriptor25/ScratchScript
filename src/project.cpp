@@ -1,5 +1,5 @@
-#include <scr/Project.hpp>
-#include <scr/Sprite.hpp>
+#include <scr/project.hpp>
+#include <scr/sprite.hpp>
 
 void scr::to_json(nlohmann::json &json, const Project &project)
 {

@@ -1,4 +1,4 @@
-#include <scr/Costume.hpp>
+#include <scr/costume.hpp>
 
 void scr::to_json(nlohmann::json &json, const Costume &costume)
 {

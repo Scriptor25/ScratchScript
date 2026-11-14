@@ -1,5 +1,5 @@
-#include <scr/Log.hpp>
-#include <scr/Window.hpp>
+#include <scr/log.hpp>
+#include <scr/window.hpp>
 
 static void glfw_error_callback(const int error_code, const char *description)
 {

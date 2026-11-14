@@ -1,8 +1,9 @@
 #pragma once
 
+#include <scr/editor.hpp>
+#include <scr/scr.hpp>
+
 #include <imgui.h>
-#include <scr/ScratchScript.hpp>
-#include <scr/TextEditor.h>
 
 namespace scr
 {

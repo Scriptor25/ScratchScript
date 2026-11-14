@@ -1,4 +1,4 @@
-#include <scr/GL.hpp>
+#include <scr/gl.hpp>
 
 scr::VertexArray::VertexArray()
 {

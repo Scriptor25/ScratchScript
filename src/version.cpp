@@ -1,4 +1,4 @@
-#include <scr/ScratchScript.hpp>
+#include <scr/scr.hpp>
 
 uint32_t scr::GetVersion()
 {

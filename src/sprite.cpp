@@ -1,12 +1,12 @@
 #include <glm/ext.hpp>
-#include <scr/Costume.hpp>
-#include <scr/Sprite.hpp>
+#include <scr/costume.hpp>
+#include <scr/sprite.hpp>
 
 void scr::to_json(nlohmann::json &json, const Sprite &sprite)
 {
     json["name"] = sprite.Name;
     json["isStage"] = sprite.IsStage;
-    json["script"] = sprite.Script.Source;
+    json["script"] = sprite.Script_.Source;
 
     if (!sprite.IsStage)
     {
@@ -23,7 +23,7 @@ void scr::from_json(const nlohmann::json &json, Sprite &sprite)
 {
     sprite.Name = json["name"];
     sprite.IsStage = json["isStage"];
-    sprite.Script.Source = json["script"];
+    sprite.Script_.Source = json["script"];
 
     if (!sprite.IsStage)
     {
@@ -54,8 +54,8 @@ void scr::Sprite::ApplyModel()
     auto height = costume->Height();
 
     Model = glm::mat4(1.0f);
-    Model = translate(Model, {Position[0], Position[1], 0.0f});
-    Model = scale(Model, {Size / 100.0f, Size / 100.0f, 1.0f});
-    Model = rotate(Model, glm::radians(Direction - 90.0f), {0.0f, 0.0f, 1.0f});
-    Model = scale(Model, {width, height, 1.0f});
+    Model = translate(Model, { Position[0], Position[1], 0.0f });
+    Model = scale(Model, { Size / 100.0f, Size / 100.0f, 1.0f });
+    Model = rotate(Model, glm::radians(Direction - 90.0f), { 0.0f, 0.0f, 1.0f });
+    Model = scale(Model, { width, height, 1.0f });
 }

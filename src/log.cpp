@@ -1,5 +1,5 @@
 #include <iostream>
-#include <scr/Log.hpp>
+#include <scr/log.hpp>
 
 void scr::Error(const std::string &message)
 {

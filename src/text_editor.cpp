@@ -7,7 +7,7 @@
 #include <regex>
 #include <string>
 #include <utility>
-#include <scr/TextEditor.h>
+#include <scr/editor.hpp>
 
 template<class InputIt1, class InputIt2, class BinaryPredicate>
 bool equals(
@@ -63,7 +63,7 @@ void TextEditor::SetLanguageDefinition(const LanguageDefinition &aLanguageDef)
     mLanguageDefinition = aLanguageDef;
     mRegexList.clear();
 
-    for (auto &[fst, snd]: mLanguageDefinition.mTokenRegexStrings)
+    for (auto &[fst, snd] : mLanguageDefinition.mTokenRegexStrings)
         mRegexList.emplace_back(
             std::regex(fst, std::regex_constants::optimize),
             snd);
@@ -133,10 +133,10 @@ TextEditor::Coordinates TextEditor::SanitizeCoordinates(const Coordinates &aValu
             line = static_cast<int>(mLines.size()) - 1;
             column = GetLineMaxColumn(line);
         }
-        return {line, column};
+        return { line, column };
     }
     column = mLines.empty() ? 0 : std::min(column, GetLineMaxColumn(line));
-    return {line, column};
+    return { line, column };
 }
 
 // https://en.wikipedia.org/wiki/UTF-8
@@ -409,7 +409,7 @@ TextEditor::Coordinates TextEditor::FindWordStart(const Coordinates &aFrom) cons
         }
         --cindex;
     }
-    return {at.mLine, GetCharacterColumn(at.mLine, cindex)};
+    return { at.mLine, GetCharacterColumn(at.mLine, cindex) };
 }
 
 TextEditor::Coordinates TextEditor::FindWordEnd(const Coordinates &aFrom) const
@@ -442,7 +442,7 @@ TextEditor::Coordinates TextEditor::FindWordEnd(const Coordinates &aFrom) const
         }
         cindex += d;
     }
-    return {aFrom.mLine, GetCharacterColumn(aFrom.mLine, cindex)};
+    return { aFrom.mLine, GetCharacterColumn(aFrom.mLine, cindex) };
 }
 
 TextEditor::Coordinates TextEditor::FindNextWord(const Coordinates &aFrom) const
@@ -467,7 +467,7 @@ TextEditor::Coordinates TextEditor::FindNextWord(const Coordinates &aFrom) const
         if (at.mLine >= mLines.size())
         {
             auto l = std::max(0, static_cast<int>(mLines.size()) - 1);
-            return {l, GetLineMaxColumn(l)};
+            return { l, GetLineMaxColumn(l) };
         }
 
         auto &line = mLines[at.mLine];
@@ -476,7 +476,7 @@ TextEditor::Coordinates TextEditor::FindNextWord(const Coordinates &aFrom) const
             isword = isalnum(line[cindex].mChar);
 
             if (isword && !skip)
-                return {at.mLine, GetCharacterColumn(at.mLine, cindex)};
+                return { at.mLine, GetCharacterColumn(at.mLine, cindex) };
 
             if (!isword)
                 skip = false;
@@ -584,7 +584,7 @@ void TextEditor::RemoveLine(const int aStart, const int aEnd)
     assert(mLines.size() > static_cast<size_t>(aEnd - aStart));
 
     ErrorMarkers etmp;
-    for (auto &[fst, snd]: mErrorMarkers)
+    for (auto &[fst, snd] : mErrorMarkers)
     {
         ErrorMarkers::value_type e(fst >= aStart ? fst - 1 : fst, snd);
         if (e.first >= aStart && e.first <= aEnd)
@@ -594,7 +594,7 @@ void TextEditor::RemoveLine(const int aStart, const int aEnd)
     mErrorMarkers = std::move(etmp);
 
     Breakpoints btmp;
-    for (auto i: mBreakpoints)
+    for (auto i : mBreakpoints)
     {
         if (i >= aStart && i <= aEnd)
             continue;
@@ -614,7 +614,7 @@ void TextEditor::RemoveLine(const int aIndex)
     assert(mLines.size() > 1);
 
     ErrorMarkers etmp;
-    for (auto &[fst, snd]: mErrorMarkers)
+    for (auto &[fst, snd] : mErrorMarkers)
     {
         ErrorMarkers::value_type e(fst > aIndex ? fst - 1 : fst, snd);
         if (e.first - 1 == aIndex)
@@ -624,7 +624,7 @@ void TextEditor::RemoveLine(const int aIndex)
     mErrorMarkers = std::move(etmp);
 
     Breakpoints btmp;
-    for (auto i: mBreakpoints)
+    for (auto i : mBreakpoints)
     {
         if (i == aIndex)
             continue;
@@ -645,13 +645,13 @@ TextEditor::Line &TextEditor::InsertLine(const int aIndex)
     auto &result = *mLines.insert(mLines.begin() + aIndex, Line());
 
     ErrorMarkers etmp;
-    for (auto &[fst, snd]: mErrorMarkers)
+    for (auto &[fst, snd] : mErrorMarkers)
         etmp.insert(
             ErrorMarkers::value_type(fst >= aIndex ? fst + 1 : fst, snd));
     mErrorMarkers = std::move(etmp);
 
     Breakpoints btmp;
-    for (auto i: mBreakpoints)
+    for (auto i : mBreakpoints)
         btmp.insert(i >= aIndex ? i + 1 : i);
     mBreakpoints = std::move(btmp);
 
@@ -798,7 +798,7 @@ void TextEditor::HandleMouseInputs()
             const auto doubleClick = ImGui::IsMouseDoubleClicked(0);
             const auto t = ImGui::GetTime();
             const auto tripleClick =
-                    click && !doubleClick && (mLastClick != -1.0f && t - mLastClick < io.MouseDoubleClickTime);
+                click && !doubleClick && (mLastClick != -1.0f && t - mLastClick < io.MouseDoubleClickTime);
 
             /*
 			Left mouse button triple click
@@ -1203,7 +1203,7 @@ void TextEditor::Render(const char *aTitle, const ImVec2 &aSize, const bool aBor
     if (mHandleKeyboardInputs)
     {
         HandleKeyboardInputs();
-        ImGui::PushAllowKeyboardFocus(true);
+        ImGui::Push(true);
     }
 
     if (mHandleMouseInputs)
@@ -1228,7 +1228,7 @@ void TextEditor::SetText(const std::string &aText)
 {
     mLines.clear();
     mLines.emplace_back();
-    for (auto chr: aText)
+    for (auto chr : aText)
     {
         if (chr == '\r')
         {
@@ -1268,7 +1268,7 @@ void TextEditor::SetTextLines(const std::vector<std::string> &aLines)
             const auto &aLine = aLines[i];
 
             mLines[i].reserve(aLine.size());
-            for (auto j: aLine)
+            for (auto j : aLine)
                 mLines[i].emplace_back(j, PaletteIndex::Default);
         }
     }
@@ -1401,7 +1401,7 @@ void TextEditor::EnterCharacter(ImWchar aChar, bool aShift)
         if (mLanguageDefinition.mAutoIndentation)
             for (size_t it = 0; it < line.size() && isascii(line[it].mChar) && isblank(line[it].mChar); ++it)
                 newLine.
-                        push_back(line[it]);
+                    push_back(line[it]);
 
         const auto whitespaceSize = newLine.size();
         auto cindex = GetCharacterIndex(coord);
@@ -1937,7 +1937,7 @@ void TextEditor::Backspace()
             prevLine.insert(prevLine.end(), line.begin(), line.end());
 
             ErrorMarkers etmp;
-            for (auto &[fst, snd]: mErrorMarkers)
+            for (auto &[fst, snd] : mErrorMarkers)
                 etmp.insert(
                     ErrorMarkers::value_type(
                         fst - 1 == mState.mCursorPosition.mLine ? fst - 1 : fst,
@@ -2008,7 +2008,7 @@ void TextEditor::Copy()
         {
             std::string str;
             auto &line = mLines[GetActualCursorCoordinates().mLine];
-            for (const auto &g: line)
+            for (const auto &g : line)
                 str.push_back(static_cast<char>(g.mChar));
             ImGui::SetClipboardText(str.c_str());
         }
@@ -2257,7 +2257,7 @@ std::vector<std::string> TextEditor::GetTextLines() const
 
     result.reserve(mLines.size());
 
-    for (auto &line: mLines)
+    for (auto &line : mLines)
     {
         std::string text;
 
@@ -2344,7 +2344,7 @@ void TextEditor::ColorizeRange(const int aFromLine, const int aToLine)
 
             if (!hasTokenizeResult)
             {
-                for (auto &[fst, snd]: mRegexList)
+                for (auto &[fst, snd] : mRegexList)
                 {
                     if (std::regex_search(first, last, results, fst, std::regex_constants::match_continuous))
                     {
@@ -2416,7 +2416,7 @@ void TextEditor::ColorizeInternal()
         auto withinString = false;
         auto withinSingleLineComment = false;
         auto withinPreproc = false;
-        auto firstChar = true; // there is no other non-whitespace characters in the line before
+        auto firstChar = true;    // there is no other non-whitespace characters in the line before
         auto concatenate = false; // '\' on the very end of the line
         auto currentLine = 0;
         auto currentIndex = 0;
@@ -2844,7 +2844,7 @@ static bool TokenizeCStyleNumber(const char *in_begin, const char *in_end, const
 
             while (p < in_end && ((*p >= '0' && *p <= '9') || (*p >= 'a' && *p <= 'f') || (*p >= 'A' && *p <= 'F')))
                 p
-                        ++;
+                    ++;
         }
         else if (*p == 'b' || *p == 'B')
         {
@@ -3044,7 +3044,7 @@ const TextEditor::LanguageDefinition &TextEditor::LanguageDefinition::CPlusPlus(
             "xor",
             "xor_eq"
         };
-        for (auto &k: cppKeywords)
+        for (auto &k : cppKeywords)
             langDef.mKeywords.insert(k);
 
         static constexpr const char *identifiers[] = {
@@ -3110,7 +3110,7 @@ const TextEditor::LanguageDefinition &TextEditor::LanguageDefinition::CPlusPlus(
             "min",
             "max"
         };
-        for (auto &k: identifiers)
+        for (auto &k : identifiers)
         {
             Identifier id;
             id.mDeclaration = "Built-in function";
@@ -3118,56 +3118,56 @@ const TextEditor::LanguageDefinition &TextEditor::LanguageDefinition::CPlusPlus(
         }
 
         langDef.mTokenize = [](
-            const char *in_begin,
-            const char *in_end,
-            const char *&out_begin,
-            const char *&out_end,
-            PaletteIndex &paletteIndex) -> bool
+                const char *in_begin,
+                const char *in_end,
+                const char *&out_begin,
+                const char *&out_end,
+                PaletteIndex &paletteIndex) -> bool
+            {
+                paletteIndex = PaletteIndex::Max;
+
+                while (in_begin < in_end && isascii(*in_begin) && isblank(*in_begin))
+                    in_begin++;
+
+                if (in_begin == in_end)
                 {
-                    paletteIndex = PaletteIndex::Max;
+                    out_begin = in_end;
+                    out_end = in_end;
+                    paletteIndex = PaletteIndex::Default;
+                }
+                else if (TokenizeCStyleString(
+                    in_begin,
+                    in_end,
+                    out_begin,
+                    out_end))
+                    paletteIndex = PaletteIndex::String;
+                else if (TokenizeCStyleCharacterLiteral(
+                    in_begin,
+                    in_end,
+                    out_begin,
+                    out_end))
+                    paletteIndex = PaletteIndex::CharLiteral;
+                else if (TokenizeCStyleIdentifier(
+                    in_begin,
+                    in_end,
+                    out_begin,
+                    out_end))
+                    paletteIndex = PaletteIndex::Identifier;
+                else if (TokenizeCStyleNumber(
+                    in_begin,
+                    in_end,
+                    out_begin,
+                    out_end))
+                    paletteIndex = PaletteIndex::Number;
+                else if (TokenizeCStylePunctuation(
+                    in_begin,
+                    in_end,
+                    out_begin,
+                    out_end))
+                    paletteIndex = PaletteIndex::Punctuation;
 
-                    while (in_begin < in_end && isascii(*in_begin) && isblank(*in_begin))
-                        in_begin++;
-
-                    if (in_begin == in_end)
-                    {
-                        out_begin = in_end;
-                        out_end = in_end;
-                        paletteIndex = PaletteIndex::Default;
-                    }
-                    else if (TokenizeCStyleString(
-                        in_begin,
-                        in_end,
-                        out_begin,
-                        out_end))
-                        paletteIndex = PaletteIndex::String;
-                    else if (TokenizeCStyleCharacterLiteral(
-                        in_begin,
-                        in_end,
-                        out_begin,
-                        out_end))
-                        paletteIndex = PaletteIndex::CharLiteral;
-                    else if (TokenizeCStyleIdentifier(
-                        in_begin,
-                        in_end,
-                        out_begin,
-                        out_end))
-                        paletteIndex = PaletteIndex::Identifier;
-                    else if (TokenizeCStyleNumber(
-                        in_begin,
-                        in_end,
-                        out_begin,
-                        out_end))
-                        paletteIndex = PaletteIndex::Number;
-                    else if (TokenizeCStylePunctuation(
-                        in_begin,
-                        in_end,
-                        out_begin,
-                        out_end))
-                        paletteIndex = PaletteIndex::Punctuation;
-
-                    return paletteIndex != PaletteIndex::Max;
-                };
+                return paletteIndex != PaletteIndex::Max;
+            };
 
         langDef.mCommentStart = "/*";
         langDef.mCommentEnd = "*/";
@@ -3378,7 +3378,7 @@ const TextEditor::LanguageDefinition &TextEditor::LanguageDefinition::HLSL()
             "half3x4",
             "half4x4",
         };
-        for (auto &k: keywords)
+        for (auto &k : keywords)
             langDef.mKeywords.insert(k);
 
         static constexpr const char *identifiers[] = {
@@ -3524,7 +3524,7 @@ const TextEditor::LanguageDefinition &TextEditor::LanguageDefinition::HLSL()
             "transpose",
             "trunc"
         };
-        for (auto &k: identifiers)
+        for (auto &k : identifiers)
         {
             Identifier id;
             id.mDeclaration = "Built-in function";
@@ -3620,7 +3620,7 @@ const TextEditor::LanguageDefinition &TextEditor::LanguageDefinition::GLSL()
             "_Static_assert",
             "_Thread_local"
         };
-        for (auto &k: keywords)
+        for (auto &k : keywords)
             langDef.mKeywords.insert(k);
 
         static constexpr const char *identifiers[] = {
@@ -3674,7 +3674,7 @@ const TextEditor::LanguageDefinition &TextEditor::LanguageDefinition::GLSL()
             "tolower",
             "toupper"
         };
-        for (auto &k: identifiers)
+        for (auto &k : identifiers)
         {
             Identifier id;
             id.mDeclaration = "Built-in function";
@@ -3770,7 +3770,7 @@ const TextEditor::LanguageDefinition &TextEditor::LanguageDefinition::C()
             "_Static_assert",
             "_Thread_local"
         };
-        for (auto &k: keywords)
+        for (auto &k : keywords)
             langDef.mKeywords.insert(k);
 
         static constexpr const char *identifiers[] = {
@@ -3824,7 +3824,7 @@ const TextEditor::LanguageDefinition &TextEditor::LanguageDefinition::C()
             "tolower",
             "toupper"
         };
-        for (auto &k: identifiers)
+        for (auto &k : identifiers)
         {
             Identifier id;
             id.mDeclaration = "Built-in function";
@@ -3832,56 +3832,56 @@ const TextEditor::LanguageDefinition &TextEditor::LanguageDefinition::C()
         }
 
         langDef.mTokenize = [](
-            const char *in_begin,
-            const char *in_end,
-            const char *&out_begin,
-            const char *&out_end,
-            PaletteIndex &paletteIndex) -> bool
+                const char *in_begin,
+                const char *in_end,
+                const char *&out_begin,
+                const char *&out_end,
+                PaletteIndex &paletteIndex) -> bool
+            {
+                paletteIndex = PaletteIndex::Max;
+
+                while (in_begin < in_end && isascii(*in_begin) && isblank(*in_begin))
+                    in_begin++;
+
+                if (in_begin == in_end)
                 {
-                    paletteIndex = PaletteIndex::Max;
+                    out_begin = in_end;
+                    out_end = in_end;
+                    paletteIndex = PaletteIndex::Default;
+                }
+                else if (TokenizeCStyleString(
+                    in_begin,
+                    in_end,
+                    out_begin,
+                    out_end))
+                    paletteIndex = PaletteIndex::String;
+                else if (TokenizeCStyleCharacterLiteral(
+                    in_begin,
+                    in_end,
+                    out_begin,
+                    out_end))
+                    paletteIndex = PaletteIndex::CharLiteral;
+                else if (TokenizeCStyleIdentifier(
+                    in_begin,
+                    in_end,
+                    out_begin,
+                    out_end))
+                    paletteIndex = PaletteIndex::Identifier;
+                else if (TokenizeCStyleNumber(
+                    in_begin,
+                    in_end,
+                    out_begin,
+                    out_end))
+                    paletteIndex = PaletteIndex::Number;
+                else if (TokenizeCStylePunctuation(
+                    in_begin,
+                    in_end,
+                    out_begin,
+                    out_end))
+                    paletteIndex = PaletteIndex::Punctuation;
 
-                    while (in_begin < in_end && isascii(*in_begin) && isblank(*in_begin))
-                        in_begin++;
-
-                    if (in_begin == in_end)
-                    {
-                        out_begin = in_end;
-                        out_end = in_end;
-                        paletteIndex = PaletteIndex::Default;
-                    }
-                    else if (TokenizeCStyleString(
-                        in_begin,
-                        in_end,
-                        out_begin,
-                        out_end))
-                        paletteIndex = PaletteIndex::String;
-                    else if (TokenizeCStyleCharacterLiteral(
-                        in_begin,
-                        in_end,
-                        out_begin,
-                        out_end))
-                        paletteIndex = PaletteIndex::CharLiteral;
-                    else if (TokenizeCStyleIdentifier(
-                        in_begin,
-                        in_end,
-                        out_begin,
-                        out_end))
-                        paletteIndex = PaletteIndex::Identifier;
-                    else if (TokenizeCStyleNumber(
-                        in_begin,
-                        in_end,
-                        out_begin,
-                        out_end))
-                        paletteIndex = PaletteIndex::Number;
-                    else if (TokenizeCStylePunctuation(
-                        in_begin,
-                        in_end,
-                        out_begin,
-                        out_end))
-                        paletteIndex = PaletteIndex::Punctuation;
-
-                    return paletteIndex != PaletteIndex::Max;
-                };
+                return paletteIndex != PaletteIndex::Max;
+            };
 
         langDef.mCommentStart = "/*";
         langDef.mCommentEnd = "*/";
@@ -4080,7 +4080,7 @@ const TextEditor::LanguageDefinition &TextEditor::LanguageDefinition::SQL()
             "WRITETEXT"
         };
 
-        for (auto &k: keywords)
+        for (auto &k : keywords)
             langDef.mKeywords.insert(k);
 
         static constexpr const char *identifiers[] = {
@@ -4221,7 +4221,7 @@ const TextEditor::LanguageDefinition &TextEditor::LanguageDefinition::SQL()
             "VARIANCE",
             "VSIZE "
         };
-        for (auto &k: identifiers)
+        for (auto &k : identifiers)
         {
             Identifier id;
             id.mDeclaration = "Built-in function";
@@ -4331,7 +4331,7 @@ const TextEditor::LanguageDefinition &TextEditor::LanguageDefinition::AngelScrip
             "xor"
         };
 
-        for (auto &k: keywords)
+        for (auto &k : keywords)
             langDef.mKeywords.insert(k);
 
         static constexpr const char *identifiers[] = {
@@ -4367,7 +4367,7 @@ const TextEditor::LanguageDefinition &TextEditor::LanguageDefinition::AngelScrip
             "opMul",
             "opDiv"
         };
-        for (auto &k: identifiers)
+        for (auto &k : identifiers)
         {
             Identifier id;
             id.mDeclaration = "Built-in function";
@@ -4441,7 +4441,7 @@ const TextEditor::LanguageDefinition &TextEditor::LanguageDefinition::Lua()
             "while"
         };
 
-        for (auto &k: keywords)
+        for (auto &k : keywords)
             langDef.mKeywords.insert(k);
 
         static constexpr const char *identifiers[] = {
@@ -4624,7 +4624,7 @@ const TextEditor::LanguageDefinition &TextEditor::LanguageDefinition::Lua()
             "debug",
             "package"
         };
-        for (auto &k: identifiers)
+        for (auto &k : identifiers)
         {
             Identifier id;
             id.mDeclaration = "Built-in function";

@@ -1,5 +1,5 @@
-#include <scr/GL.hpp>
-#include <scr/ScratchScript.hpp>
+#include <scr/gl.hpp>
+#include <scr/scr.hpp>
 
 static std::string read_file(const std::string &name)
 {

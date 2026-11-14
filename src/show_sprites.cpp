@@ -1,7 +1,7 @@
 #include <imgui.h>
-#include <scr/Gui.hpp>
-#include <scr/Project.hpp>
-#include <scr/Sprite.hpp>
+#include <scr/gui.hpp>
+#include <scr/project.hpp>
+#include <scr/sprite.hpp>
 
 constexpr auto ICON_SIZE = 80.0f;
 constexpr auto COLUMN_WIDTH = ICON_SIZE + 80.0f;
@@ -24,7 +24,7 @@ void scr::ShowSprites(Project &project, size_t &selected)
         auto moved = false;
 
         size_t i = 0;
-        for (auto &sprite: project.Sprites)
+        for (auto &sprite : project.Sprites)
         {
             ImGui::PushID(static_cast<int>(i));
 
@@ -32,7 +32,7 @@ void scr::ShowSprites(Project &project, size_t &selected)
 
             const auto pos = ImGui::GetCursorPos();
             ImGui::SetNextItemAllowOverlap();
-            if (ImGui::Selectable("##selectable", &sel, 0, {COLUMN_WIDTH, column_height}))
+            if (ImGui::Selectable("##selectable", &sel, 0, { COLUMN_WIDTH, column_height }))
                 selected = i;
 
             if (ImGui::BeginDragDropSource())
@@ -63,7 +63,7 @@ void scr::ShowSprites(Project &project, size_t &selected)
                 auto h = scale * static_cast<float>(costume->Height());
                 ImGui::SetCursorPosX(pos.x + (COLUMN_WIDTH - w) * 0.5f);
                 ImGui::SetCursorPosY(pos.y);
-                ImGui::Image(costume->TexID(), {w, h}, {0, 1}, {1, 0});
+                ImGui::Image(costume->TexID(), { w, h }, { 0, 1 }, { 1, 0 });
             }
 
             const auto tw = ImGui::CalcTextSize(sprite.Name.c_str()).x;

@@ -1,9 +1,10 @@
 #pragma once
 
-#include <array>
 #include <imgui.h>
+
+#include <array>
+#include <cstdint>
 #include <map>
-#include <memory>
 #include <regex>
 #include <string>
 #include <unordered_map>
@@ -93,15 +94,15 @@ public:
         bool operator==(const Coordinates &o) const
         {
             return
-                    mLine == o.mLine &&
-                    mColumn == o.mColumn;
+                mLine == o.mLine &&
+                mColumn == o.mColumn;
         }
 
         bool operator!=(const Coordinates &o) const
         {
             return
-                    mLine != o.mLine ||
-                    mColumn != o.mColumn;
+                mLine != o.mLine ||
+                mColumn != o.mColumn;
         }
 
         bool operator<(const Coordinates &o) const
@@ -145,17 +146,17 @@ public:
     typedef std::map<int, std::string> ErrorMarkers;
     typedef std::unordered_set<int> Breakpoints;
     typedef std::array<ImU32, static_cast<unsigned>(PaletteIndex::Max)> Palette;
-    typedef uint8_t Char;
+    typedef std::uint8_t Char;
 
     struct Glyph
     {
         Char mChar;
         PaletteIndex mColorIndex = PaletteIndex::Default;
-        bool mComment: 1;
-        bool mMultiLineComment: 1;
-        bool mPreprocessor: 1;
+        bool mComment          : 1;
+        bool mMultiLineComment : 1;
+        bool mPreprocessor     : 1;
 
-        Glyph(Char aChar, PaletteIndex aColorIndex)
+        Glyph(const Char aChar, const PaletteIndex aColorIndex)
             : mChar(aChar),
               mColorIndex(aColorIndex),
               mComment(false),
@@ -402,7 +403,7 @@ public:
     static const Palette &GetRetroBluePalette();
 
 private:
-    typedef std::vector<std::pair<std::regex, PaletteIndex> > RegexList;
+    typedef std::vector<std::pair<std::regex, PaletteIndex>> RegexList;
 
     struct EditorState
     {
@@ -551,7 +552,7 @@ private:
     ImVec2 mCharAdvance;
     Coordinates mInteractiveStart, mInteractiveEnd;
     std::string mLineBuffer;
-    uint64_t mStartTime;
+    std::uint64_t mStartTime;
 
     float mLastClick;
 };

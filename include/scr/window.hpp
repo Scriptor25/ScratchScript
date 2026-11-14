@@ -2,8 +2,9 @@
 
 #define GLFW_INCLUDE_NONE
 
-#include <string>
 #include <GLFW/glfw3.h>
+
+#include <string>
 
 namespace scr
 {

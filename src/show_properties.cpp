@@ -1,7 +1,7 @@
 #include <imgui.h>
 #include <imgui_stdlib.h>
-#include <scr/Gui.hpp>
-#include <scr/Sprite.hpp>
+#include <scr/gui.hpp>
+#include <scr/sprite.hpp>
 
 void scr::ShowProperties(Sprite &sprite)
 {
@@ -21,7 +21,8 @@ void scr::ShowProperties(Sprite &sprite)
             change |= ImGui::DragFloat("Size", &sprite.Size);
             change |= ImGui::DragFloat("Direction", &sprite.Direction, 1.0f, -180.0f, 180.0f);
 
-            if (change) sprite.ApplyModel();
+            if (change)
+                sprite.ApplyModel();
         }
     }
     ImGui::End();

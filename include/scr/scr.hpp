@@ -1,7 +1,7 @@
 #pragma once
 
+#include <cstdint>
 #include <fstream>
-#include <memory>
 #include <string>
 
 #define MAKE_VERSION(major, minor, patch) ((major & 0b1111111111) << 22 | (minor & 0b1111111111) << 12 | (patch & 0b111111111111))
@@ -12,7 +12,7 @@
 
 namespace scr
 {
-    uint32_t GetVersion();
+    std::uint32_t GetVersion();
 
     std::fstream Open(const std::string &name, std::fstream::openmode mode);
 

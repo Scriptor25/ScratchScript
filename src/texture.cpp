@@ -1,8 +1,8 @@
 #include <vector>
 #include <nothings/stb_image.h>
-#include <scr/GL.hpp>
-#include <scr/Log.hpp>
-#include <scr/ScratchScript.hpp>
+#include <scr/gl.hpp>
+#include <scr/log.hpp>
+#include <scr/scr.hpp>
 
 std::shared_ptr<scr::Texture> scr::Texture::Load(const std::string &filename)
 {
@@ -26,13 +26,13 @@ std::shared_ptr<scr::Texture> scr::Texture::Load(const std::string &filename)
 
     auto texture = std::make_shared<Texture>(GL_TEXTURE_2D);
     texture
-            ->Bind()
-            ->Parameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST)
-            ->Parameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-            ->Parameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
-            ->Parameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
-            ->Image2D(0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels)
-            ->Unbind();
+        ->Bind()
+        ->Parameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+        ->Parameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+        ->Parameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
+        ->Parameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
+        ->Image2D(0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels)
+        ->Unbind();
 
     stbi_image_free(pixels);
     return texture;

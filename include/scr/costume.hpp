@@ -1,8 +1,10 @@
 #pragma once
 
-#include <string>
+#include <scr/gl.hpp>
+
 #include <nlohmann/json.hpp>
-#include <scr/GL.hpp>
+
+#include <string>
 
 namespace scr
 {

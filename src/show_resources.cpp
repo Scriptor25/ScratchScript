@@ -1,8 +1,8 @@
 #include <format>
 #include <imgui.h>
 #include <string>
-#include <scr/Gui.hpp>
-#include <scr/Sprite.hpp>
+#include <scr/gui.hpp>
+#include <scr/sprite.hpp>
 
 constexpr auto ICON_SIZE = 80.0f;
 constexpr auto COLUMN_WIDTH = ICON_SIZE + 80.0f;
@@ -17,7 +17,7 @@ void scr::ShowResources(Sprite &sprite, TextEditor &editor)
             {
                 editor.Render("Editor");
                 if (editor.IsTextChanged())
-                    sprite.Script.Changed = true;
+                    sprite.Script_.Changed = true;
 
                 ImGui::EndTabItem();
             }
@@ -27,14 +27,14 @@ void scr::ShowResources(Sprite &sprite, TextEditor &editor)
                 const auto column_height = ICON_SIZE + ImGui::CalcTextSize("Costume").y * 2;
                 const auto column_width = COLUMN_WIDTH + ImGui::GetStyle().ItemSpacing.x;
 
-                if (ImGui::BeginChild("##select-costume", {column_width, 0}))
+                if (ImGui::BeginChild("##select-costume", { column_width, 0 }))
                 {
                     size_t moveSrc = 0;
                     size_t moveDst = 0;
                     auto moved = false;
 
                     size_t i = 0;
-                    for (auto &costume: sprite.Costumes)
+                    for (auto &costume : sprite.Costumes)
                     {
                         ImGui::PushID(static_cast<int>(i));
 
@@ -42,7 +42,7 @@ void scr::ShowResources(Sprite &sprite, TextEditor &editor)
 
                         const auto pos = ImGui::GetCursorPos();
                         ImGui::SetNextItemAllowOverlap();
-                        if (ImGui::Selectable("##selectable", &sel, 0, {COLUMN_WIDTH, column_height}))
+                        if (ImGui::Selectable("##selectable", &sel, 0, { COLUMN_WIDTH, column_height }))
                         {
                             sprite.CurrentCostume = i;
                             sprite.ApplyModel();
@@ -74,7 +74,7 @@ void scr::ShowResources(Sprite &sprite, TextEditor &editor)
                         auto h = scale * static_cast<float>(costume.Height());
                         ImGui::SetCursorPosX(pos.x + (COLUMN_WIDTH - w) * 0.5f);
                         ImGui::SetCursorPosY(pos.y);
-                        ImGui::Image(costume.TexID(), {w, h}, {0, 1}, {1, 0});
+                        ImGui::Image(costume.TexID(), { w, h }, { 0, 1 }, { 1, 0 });
 
                         auto ts = ImGui::CalcTextSize(costume.Name.c_str());
                         ImGui::SetCursorPosX(pos.x + (COLUMN_WIDTH - ts.x) * 0.5f);

@@ -1,9 +1,11 @@
 #pragma once
 
+#include <scr/scr.hpp>
+
+#include <nlohmann/json.hpp>
+
 #include <string>
 #include <vector>
-#include <nlohmann/json.hpp>
-#include <scr/ScratchScript.hpp>
 
 namespace scr
 {

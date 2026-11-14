@@ -1,8 +1,9 @@
 #pragma once
 
+#include <scr/scr.hpp>
+
 #include <string>
 #include <vector>
-#include <scr/ScratchScript.hpp>
 
 namespace scr
 {

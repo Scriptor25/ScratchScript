@@ -1,4 +1,4 @@
-#include <scr/GL.hpp>
+#include <scr/gl.hpp>
 
 scr::RenderBuffer::RenderBuffer(const GLenum target)
     : m_Target(target)

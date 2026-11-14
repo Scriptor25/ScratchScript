@@ -1,8 +1,9 @@
 #pragma once
 
+#include <GL/glew.h>
+
 #include <memory>
 #include <string>
-#include <GL/glew.h>
 
 namespace scr
 {

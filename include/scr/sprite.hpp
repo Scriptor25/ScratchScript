@@ -1,12 +1,15 @@
 #pragma once
 
+#include <scr/costume.hpp>
+#include <scr/scr.hpp>
+#include <scr/script.hpp>
+
+#include <nlohmann/json.hpp>
+
+#include <glm/glm.hpp>
+
 #include <string>
 #include <vector>
-#include <glm/glm.hpp>
-#include <nlohmann/json.hpp>
-#include <scr/Costume.hpp>
-#include <scr/ScratchScript.hpp>
-#include <scr/Script.hpp>
 
 namespace scr
 {
@@ -21,11 +24,11 @@ namespace scr
         bool IsStage = false;
         bool Show = true;
 
-        float Position[2]{0.0f, 0.0f};
+        float Position[2]{ 0.0f, 0.0f };
         float Size = 100.0f;
         float Direction = 90.0f;
 
-        Script Script;
+        Script Script_;
 
         size_t CurrentCostume = 0;
         std::vector<Costume> Costumes;
